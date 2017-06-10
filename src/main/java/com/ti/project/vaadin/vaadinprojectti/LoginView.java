@@ -39,7 +39,7 @@ public class LoginView extends VerticalLayout implements View{
             popup.center();
             getUI().addWindow(popup);
         } else {
-            getUI().setContent(new VaadinUI());
+            getUI().setContent(new BookView(customer));
         }
     }
 
