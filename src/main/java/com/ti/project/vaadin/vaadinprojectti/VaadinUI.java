@@ -9,62 +9,76 @@ import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Calendar;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 @SpringUI
 public class VaadinUI extends UI {
 
+    private TabSheet tabSheet = new TabSheet();
+
     @Autowired
-    private CustomerService service;
+    private DayService service;
 
-    private Customer customer;
-    private Binder<Customer> binder = new Binder<>(Customer.class);
+    private Day day;
+    private Binder<Day> binder = new Binder<>(Day.class);
 
-    private Grid<Customer> grid = new Grid(Customer.class);
-    private TextField firstName = new TextField("First name");
-    private TextField lastName = new TextField("Last name");
-    private TextField email = new TextField("email");
-    private TextField phoneNumber = new TextField("phoneNumber");
-    private Button save = new Button("Save", e -> saveCustomer());
+    private Grid<Day> grid = new Grid(Day.class);
+    private TextField hourtoreserve = new TextField("Hour of reservtion");
+    private TextField reservedon = new TextField("Reserved by");
+    //private Button save = new Button("Book", e -> reserve()); //tu bedzie button do rejstracji
+
 
     @Override
     protected void init(VaadinRequest request) {
+
+
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+        setTabSheet(day);
+
+
+        Grid<Day> grid = new Grid(Day.class);
+        grid.setColumns("Hour", "Reserved by");
         updateGrid();
-        grid.setColumns("firstName", "lastName", "email", "phoneNumber");
-        grid.addSelectionListener(e -> updateForm());
-
         binder.bindInstanceFields(this);
-
-        VerticalLayout layout = new VerticalLayout(grid, firstName, lastName, email, phoneNumber, save);
+        VerticalLayout layout = new VerticalLayout(grid);
         setContent(layout);
     }
 
     private void updateGrid() {
-        List<Customer> customers = service.findAll();
-        grid.setItems(customers);
+        List<Day> days = service.findAll("monday");
+        grid.setItems(days);
         setFormVisible(false);
     }
 
-    private void updateForm() {
-        if (grid.asSingleSelect().isEmpty()) {
-            setFormVisible(false);
-        } else {
-            customer = grid.asSingleSelect().getValue();
-            binder.setBean(customer);
-            setFormVisible(true);
-        }
-    }
-
     private void setFormVisible(boolean visible) {
-        firstName.setVisible(visible);
-        lastName.setVisible(visible);
-        email.setVisible(visible);
-        phoneNumber.setVisible(visible);
-        save.setVisible(visible);
+        hourtoreserve.setVisible(visible);
+        reservedon.setVisible(visible);
+        //save.setVisible(visible);
     }
 
-    private void saveCustomer() {
-        service.update(customer);
+    private void setTabSheet(int day) {
+
+        Grid<Day> grid = new Grid(Day.class);
+        grid.setColumns("Hour", "Reserved by");
         updateGrid();
+        binder.bindInstanceFields(this);
+        VerticalLayout monday = new VerticalLayout(grid);
+        VerticalLayout tuesday = new VerticalLayout();
+        VerticalLayout wednesday = new VerticalLayout();
+        VerticalLayout thursday = new VerticalLayout();
+        VerticalLayout friday = new VerticalLayout();
+        VerticalLayout saturday = new VerticalLayout();
+        VerticalLayout sunday = new VerticalLayout();
+        tabSheet.addTab(monday, "Monday");
+        tabSheet.addTab(tuesday, "Tuesday");
+        tabSheet.addTab(wednesday, "Wednesday");
+        tabSheet.addTab(thursday, "Thursday");
+        tabSheet.addTab(friday, "Friday");
+        tabSheet.addTab(saturday, "Saturday");
+        tabSheet.addTab(sunday, "Sunday");
     }
 }
