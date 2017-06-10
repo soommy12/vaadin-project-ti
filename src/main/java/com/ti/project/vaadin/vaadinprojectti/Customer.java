@@ -6,14 +6,26 @@ package com.ti.project.vaadin.vaadinprojectti;
 public class Customer {
 
     private Long id;
-    private String firstName, lastName, email, phoneNumber;
+    private String firstName, lastName, email, phoneNumber, login, password;
 
-    public Customer(Long id, String firstName, String lastName, String email, String phoneNumber) {
+    public Customer(Long id, String firstName, String lastName, String email, String phoneNumber, String login, String password) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.login = login;
+        this.password = password;
+    }
+
+    public Customer(String firstName, String lastName, String email, String phoneNumber, String login, String password) {
+        this.id = null;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.login = login;
+        this.password = password;
     }
 
     public Long getId() {
@@ -54,5 +66,34 @@ public class Customer {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
