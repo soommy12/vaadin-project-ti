@@ -23,9 +23,9 @@ public class DayService {
                         rs.getString("reservedon")));
     }
 
-    public void update(Day day, String dayName){
+    public void update(Day day, String dayName, String hour){
         jdbcTemplate.update(
-                "UPDATE " + dayName + " SET reservedon=?",
+                "UPDATE " + dayName + " SET reservedon=? WHERE hourtoreserve=\"" + hour + "\"",
                 day.getReservedOn());
     }
 }
