@@ -100,6 +100,6 @@ public class BookView extends HorizontalLayout implements View {
     }
 
     BookView(Customer customer){
-        this.customer = customer;
+        init();
     }
 }

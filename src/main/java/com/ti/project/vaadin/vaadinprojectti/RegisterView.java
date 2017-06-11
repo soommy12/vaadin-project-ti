@@ -27,13 +27,13 @@ public class RegisterView extends VerticalLayout implements View {
 
     protected void init() {
         login = new TextField("Login");
-        password = new TextField("Has³o");
-        firstname = new TextField("Imiê");
-        lastname = new TextField("Nazwisko");
+        password = new TextField("Password");
+        firstname = new TextField("First name");
+        lastname = new TextField("Last name");
         email = new TextField("Email");
-        phone = new TextField("Telefon");
-        registerBtn = new Button("Rejestruj");
-        cancelBtn = new Button("Anuluj");
+        phone = new TextField("Telephone");
+        registerBtn = new Button("Register");
+        cancelBtn = new Button("Cancel");
         this.addComponents(login, password, firstname, lastname, email, phone, registerBtn);
         registerBtn.addClickListener((Button.ClickListener) clickEvent -> register());
         cancelBtn.addClickListener((Button.ClickListener) clickEvent -> cancel());
@@ -46,7 +46,7 @@ public class RegisterView extends VerticalLayout implements View {
         service.create(customer);
         Window popup = new Window();
         VerticalLayout popupLayout = new VerticalLayout();
-        popupLayout.addComponents(new Label("Utworzono konto!"), new Button("OK",
+        popupLayout.addComponents(new Label("Account created!"), new Button("OK",
                 (Button.ClickListener) clickEvent -> getUI().setContent(new LoginView())));
         popup.setContent(popupLayout);
     }
