@@ -45,13 +45,20 @@ public class RegisterView extends VerticalLayout{
     private void register(){
         Customer customer = new Customer(firstname.getValue(), lastname.getValue(), email.getValue(), phone.getValue(),
                 login.getValue(), password.getValue());
-        System.out.println(customer);
-        customerService.create(customer);
-        VerticalLayout popupLayout = new VerticalLayout();
-        popupLayout.addComponents(new Label("Account created!"), new Button("OK",
-                (Button.ClickListener) clickEvent -> getUI().removeWindow((Window)getParent())));
-        this.removeAllComponents();
-        this.addComponent(popupLayout);
+        if(customerService.find(login.getValue(), password.getValue())!=null) {
+            VerticalLayout popupLayout = new VerticalLayout();
+            popupLayout.addComponents(new Label("Account is in base already"), new Button("OK",
+                    (Button.ClickListener) clickEvent -> getUI().removeWindow((Window)getParent())));
+            this.removeAllComponents();
+            this.addComponent(popupLayout);
+        } else {
+            customerService.create(customer);
+            VerticalLayout popupLayout = new VerticalLayout();
+            popupLayout.addComponents(new Label("Account created!"), new Button("OK",
+                    (Button.ClickListener) clickEvent -> getUI().removeWindow((Window) getParent())));
+            this.removeAllComponents();
+            this.addComponent(popupLayout);
+        }
     }
 
     private void cancel(){
