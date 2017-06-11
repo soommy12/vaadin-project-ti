@@ -2,21 +2,29 @@ package com.ti.project.vaadin.vaadinprojectti;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.*;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Created by przem on 10.06.2017.
  */
-@SpringView(name = "LoginView")
-public class LoginView extends VerticalLayout implements View{
+//@SpringView(name = "LoginView")
+
+@SpringComponent
+@Scope("singleton") //zeby miec dokladnie jedna instancje tej klasy
+public class LoginView extends VerticalLayout{
 
     @Autowired
     private CustomerService service;
 
-    @Autowired
-    private  DayService service2;
     private Customer customer;
 
     private TextField login;
@@ -24,6 +32,7 @@ public class LoginView extends VerticalLayout implements View{
     private Button loginBtn;
     private Button registerBtn;
 
+    @PostConstruct
     protected void init() {
         login = new TextField("Login");
         password = new PasswordField("Password");
@@ -39,7 +48,8 @@ public class LoginView extends VerticalLayout implements View{
     }
 
     private void login(){
-        //service.find(login.getValue(), password.getValue());
+//        service.find(login.getValue(), password.getValue());
+//        customer = service.find("a", "a");
         customer = service.find(login.getValue(), password.getValue());
         if(customer==null){
             Window popup = new Window();
@@ -51,7 +61,6 @@ public class LoginView extends VerticalLayout implements View{
             getUI().setContent(new BookView(customer));
         }
     }
-
     private void register(){
         Window popup = new Window();
         popup.setContent(new RegisterView());
@@ -60,12 +69,12 @@ public class LoginView extends VerticalLayout implements View{
         getUI().addWindow(popup);
     }
 
-    @Override
+   /* @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        init();
-    }
+        //init();
+    }*/
 
-    LoginView(){
+   /* LoginView(){
         init();
-    }
+    }*/
 }
