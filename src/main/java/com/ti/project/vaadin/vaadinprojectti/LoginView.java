@@ -20,6 +20,9 @@ public class LoginView extends VerticalLayout{
     @Autowired
     private RegisterView registerView;
 
+    @Autowired
+    private BookView bookView;
+
     private Customer customer;
 
     private TextField login;
@@ -51,7 +54,8 @@ public class LoginView extends VerticalLayout{
             popup.center();
             getUI().addWindow(popup);
         } else {
-            getUI().setContent(new BookView(customer));
+            bookView.setCustomer(customer);
+            getUI().setContent(bookView);
         }
     }
     private void register(){

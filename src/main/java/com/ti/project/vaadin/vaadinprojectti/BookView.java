@@ -5,17 +5,18 @@ package com.ti.project.vaadin.vaadinprojectti;
  */
 
 import com.vaadin.data.Binder;
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
-@SpringView(name = "BookView")
-//public class VaadinUI extends UI {
-public class BookView extends HorizontalLayout implements View {
+
+@SpringComponent
+@Scope("singleton") //zeby miec dokladnie jedna instancje tej klasy
+public class BookView extends HorizontalLayout{
 
     private Customer customer;
 
@@ -24,6 +25,9 @@ public class BookView extends HorizontalLayout implements View {
     @Autowired
     private DayService service;
 
+    @Autowired
+    private LoginView loginView;
+
     private Day day;
     private Binder<Day> binder = new Binder<>(Day.class);
 
@@ -31,16 +35,19 @@ public class BookView extends HorizontalLayout implements View {
     private TextField hourtoreserve = new TextField("Hour to book");
     private TextField reservedon = new TextField("Reserved by");
     private Button save = new Button("Book");
+    private Button logout = new Button("Logout", (Button.ClickListener) clickEvent -> getUI().setContent(loginView));
 
+    public void setCustomer(Customer customer){
+        this.customer = customer;
+    }
 
-    //@Override
-    protected void init(/*VaadinRequest request*/) {
-
+    @PostConstruct
+    protected void init() {
         binder.bindInstanceFields(this);
         setTabSheet();
         VerticalLayout bookLayout = new VerticalLayout(hourtoreserve, reservedon, save);
 //        HorizontalLayout layout = new HorizontalLayout(tabSheet, bookLayout);
-        this.addComponents(tabSheet, bookLayout);
+        this.addComponents(tabSheet, bookLayout, logout);
     }
 
     private void setFormVisible(boolean visible) {
@@ -88,14 +95,5 @@ public class BookView extends HorizontalLayout implements View {
         VerticalLayout dayLayout = new VerticalLayout(grid);
         tabSheet.addTab(dayLayout, weekDay);
 
-    }
-
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        init();
-    }
-
-    BookView(Customer customer){
-        init();
     }
 }
