@@ -1,29 +1,24 @@
 package com.ti.project.vaadin.vaadinprojectti;
 
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.*;
-import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.annotation.PostConstruct;
 
 /**
  * Created by przem on 10.06.2017.
  */
-//@SpringView(name = "LoginView")
-
 @SpringComponent
 @Scope("singleton") //zeby miec dokladnie jedna instancje tej klasy
 public class LoginView extends VerticalLayout{
 
     @Autowired
     private CustomerService service;
+
+    @Autowired
+    private RegisterView registerView;
 
     private Customer customer;
 
@@ -48,8 +43,6 @@ public class LoginView extends VerticalLayout{
     }
 
     private void login(){
-//        service.find(login.getValue(), password.getValue());
-//        customer = service.find("a", "a");
         customer = service.find(login.getValue(), password.getValue());
         if(customer==null){
             Window popup = new Window();
@@ -63,18 +56,9 @@ public class LoginView extends VerticalLayout{
     }
     private void register(){
         Window popup = new Window();
-        popup.setContent(new RegisterView());
+        popup.setContent(registerView);
         popup.setVisible(true);
         popup.center();
         getUI().addWindow(popup);
     }
-
-   /* @Override
-    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        //init();
-    }*/
-
-   /* LoginView(){
-        init();
-    }*/
 }

@@ -3,18 +3,14 @@ package com.ti.project.vaadin.vaadinprojectti;
 /**
  * Created by Bartosz on 10.06.2017.
  */
+
 import com.vaadin.data.Binder;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Calendar;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 @SpringView(name = "BookView")

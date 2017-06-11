@@ -1,20 +1,22 @@
 package com.ti.project.vaadin.vaadinprojectti;
 
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.spring.annotation.SpringViewDisplay;
+import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Created by przem on 10.06.2017.
  */
-@SpringView(name = "RegisterView")
-public class RegisterView extends VerticalLayout implements View {
+
+@SpringComponent
+@Scope("singleton") //zeby miec dokladnie jedna instancje tej klasy
+public class RegisterView extends VerticalLayout{
 
     @Autowired
-    CustomerService service;
+    CustomerService customerService;
 
     private TextField login;
     private TextField password;
@@ -25,6 +27,7 @@ public class RegisterView extends VerticalLayout implements View {
     private Button registerBtn;
     private Button cancelBtn;
 
+    @PostConstruct
     protected void init() {
         login = new TextField("Login");
         password = new TextField("Password");
@@ -43,24 +46,15 @@ public class RegisterView extends VerticalLayout implements View {
         Customer customer = new Customer(firstname.getValue(), lastname.getValue(), email.getValue(), phone.getValue(),
                 login.getValue(), password.getValue());
         System.out.println(customer);
-        service.create(customer);
-        Window popup = new Window();
+        customerService.create(customer);
         VerticalLayout popupLayout = new VerticalLayout();
         popupLayout.addComponents(new Label("Account created!"), new Button("OK",
-                (Button.ClickListener) clickEvent -> getUI().setContent(new LoginView())));
-        popup.setContent(popupLayout);
+                (Button.ClickListener) clickEvent -> getUI().removeWindow((Window)getParent())));
+        this.removeAllComponents();
+        this.addComponent(popupLayout);
     }
 
     private void cancel(){
         getUI().setContent(new LoginView());
-    }
-
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        init();
-    }
-
-    RegisterView(){
-        init();
     }
 }
