@@ -1,15 +1,20 @@
 package com.ti.project.vaadin.vaadinprojectti;
 
+import com.vaadin.annotations.Theme;
+import com.vaadin.server.FileResource;
+import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 
 /**
  * Created by przem on 10.06.2017.
  */
+
 @SpringComponent
 @Scope("singleton") //zeby miec dokladnie jedna instancje tej klasy
 public class LoginView extends VerticalLayout{
@@ -29,6 +34,8 @@ public class LoginView extends VerticalLayout{
     private PasswordField password;
     private Button loginBtn;
     private Button registerBtn;
+    private Label welcomeLabel;
+  //  private String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
 
     @PostConstruct
     protected void init() {
@@ -36,10 +43,16 @@ public class LoginView extends VerticalLayout{
         password = new PasswordField("Password");
         loginBtn = new Button("Sign in");
         registerBtn = new Button("Register");
+        welcomeLabel = new Label("Welcome to the ORLIK Booking!");
+
+        FileResource resource = new FileResource(new File("C:\\Users\\Bartosz\\Documents\\STUDIA\\vaadin-project-ti\\src\\main\\resources\\football-1.png"));
+        Image footballImage = new Image("",resource);
         HorizontalLayout buttons = new HorizontalLayout(loginBtn, registerBtn);
         loginBtn.addClickListener((Button.ClickListener) clickEvent -> login());
         registerBtn.addClickListener((Button.ClickListener) clickEvent -> register());
-        this.addComponents(login, password, buttons);
+        this.addComponents(welcomeLabel, login, password, buttons, footballImage);
+        this.setComponentAlignment(welcomeLabel, Alignment.TOP_CENTER);
+        this.setComponentAlignment(footballImage, Alignment.TOP_CENTER);
         this.setComponentAlignment(login, Alignment.TOP_CENTER);
         this.setComponentAlignment(password, Alignment.TOP_CENTER);
         this.setComponentAlignment(buttons, Alignment.TOP_CENTER);

@@ -4,6 +4,7 @@ package com.ti.project.vaadin.vaadinprojectti;
  * Created by Bartosz on 10.06.2017.
  */
 
+import com.vaadin.annotations.Theme;
 import com.vaadin.data.Binder;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.*;
@@ -12,7 +13,6 @@ import org.springframework.context.annotation.Scope;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
-
 
 @SpringComponent
 @Scope("singleton") //zeby miec dokladnie jedna instancje tej klasy
@@ -36,6 +36,7 @@ public class BookView extends HorizontalLayout{
     private TextField reservedon = new TextField("Reserved by");
     private Button save = new Button("Book");
     private Button logout = new Button("Logout", (Button.ClickListener) clickEvent -> getUI().setContent(loginView));
+    private Label instructionLabel = new Label("To book, click on the hour you are interested!");
 
     public void setCustomer(Customer customer){
         this.customer = customer;
@@ -45,9 +46,10 @@ public class BookView extends HorizontalLayout{
     protected void init() {
         binder.bindInstanceFields(this);
         setTabSheet();
-        VerticalLayout bookLayout = new VerticalLayout(hourtoreserve, reservedon, save);
-//        HorizontalLayout layout = new HorizontalLayout(tabSheet, bookLayout);
-        this.addComponents(tabSheet, bookLayout, logout);
+        VerticalLayout tabsWithLabel = new VerticalLayout(instructionLabel, tabSheet);
+        VerticalLayout bookLayout = new VerticalLayout(logout, hourtoreserve, reservedon, save);
+
+        this.addComponents(tabsWithLabel, bookLayout);
     }
 
     private void setFormVisible(boolean visible) {
